@@ -1,0 +1,9 @@
+*component for list of Kegs
+*component for new Keg
+*component to update Keg (maybe delete)
+*Keg class properties: Name, Brand, Price, Alcohol Content, Volume(in pints)
+*Create model for Keg class
+*Sell pint button for patrons
+
+
+*Pipe for filtering based on pints, price, and alcohol content
