@@ -21,7 +21,8 @@ export class AppComponent {
   kegs: Keg[] = [
     new Keg('IPA','Bryan\'s Brewery',4.00,4.2),
     new Keg('Bud Light','David\'s brewery',6.00,3.8),
-    new Keg('Coors Light','Jason\'s Brewery', 5.00, 4.0)
+    new Keg('Coors Light','Jason\'s Brewery', 5.00, 4.0),
+    new Keg('Strong Beer','Jon\'s Brewery', 1.00, 7.0)
   ];
 
   updateKeg(clickedKeg) {
@@ -39,4 +40,5 @@ export class AppComponent {
   updatePint(kegPint){
     kegPint.volume -= 1;
   }
+
 }

@@ -12,11 +12,17 @@ import { Keg } from './keg.model';
   </select>
 
   <ul>
-    <li [class]='priceColor(currentKeg)' *ngFor="let currentKeg of childKegList | checkPintsRemaining:filterByPints">{{currentKeg.name}} - {{currentKeg.brand}} - \${{currentKeg.price}} - {{currentKeg.alcoholContent}} ABV - {{currentKeg.volume}} pints remaining
+    <li [class]='priceColor(currentKeg)' [class]='alcoholContent(currentKeg)' *ngFor="let currentKeg of childKegList | checkPintsRemaining:filterByPints">{{currentKeg.name}} - {{currentKeg.brand}} -
+    <span *ngIf='happyHourOn'>\${{currentKeg.price*.5}}</span>
+    <span *ngIf='!happyHourOn'>\${{currentKeg.price}}</span>
+    - {{currentKeg.alcoholContent}} ABV - {{currentKeg.volume}} pints remaining
     <br>
     <button class="btn btn-primary" (click)="updateKegButton(currentKeg)">Update</button>
     <button class="btn btn-danger" (click)="buyPint(currentKeg)">Buy Pint</button></li>
   </ul>
+
+  <button *ngIf='!happyHourOn'(click)='happyHour()'>Happy Hour!</button>
+  <button *ngIf='happyHourOn' (click)='happyHour()'>Sad Hour!</button>
   `
 })
 
@@ -25,7 +31,22 @@ export class KegListComponent {
   @Output() updateKegSender = new EventEmitter();
   @Output() updatePintSender = new EventEmitter();
 
+  happyHourOn = false;
   filterByPints: string = 'allKegs';
+
+  happyHour = function(){
+    this.happyHourOn = !this.happyHourOn;
+  };
+
+  ngOnInit(){
+    var access = this;
+    setInterval(function(){
+      var currentTime = new Date
+      if(currentTime.getHours()===15||currentTime.getHours()===18){
+        access.happyHour()
+      }
+    }, 60000);
+  }
 
   updateKegButton(kegToEdit: Keg) {
     this.updateKegSender.emit(kegToEdit);
@@ -45,7 +66,16 @@ export class KegListComponent {
     }
   }
 
+  alcoholContent(currentKeg){
+    if(currentKeg.alcoholContent > 5) {
+      return 'highABV';
+    } else {
+      return 'lowABV';
+    }
+  }
+
   onChange(optionFromMenu) {
     this.filterByPints = optionFromMenu;
   }
+
 }
